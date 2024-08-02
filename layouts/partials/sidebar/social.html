@@ -1,0 +1,53 @@
+<section class="social">
+	{{ with .Site.Params.social.twitter }}
+	<a href="https://twitter.com/{{.}}" rel="me"><i class="rotate fab fa-twitter fa-lg" aria-hidden="true"></i></a>
+	{{ end }}
+	{{ with .Site.Params.social.facebook }}
+	<a href="https://facebook.com/{{.}}" rel="me"><i class="rotate fab fa-facebook-f"></i></a>
+	{{ end }}
+	{{ with .Site.Params.social.github }}
+	<a href="https://github.com/{{.}}" rel="me"><i class="rotate fab fa-github fa-lg" aria-hidden="true"></i></a>
+	{{ end }}
+	{{ with .Site.Params.social.bitbucket }}
+	<a href="https://bitbucket.org/{{.}}" rel="me"><i class="rotate fab fa-bitbucket fa-lg" aria-hidden="true"></i></a>
+	{{ end }}
+	{{ with .Site.Params.social.gitlab }}
+	<a href="https://gitlab.com/{{.}}" rel="me"><i class="rotate fab fa-gitlab fa-lg" aria-hidden="true"></i></a>
+	{{ end }}
+	{{ with .Site.Params.social.instagram }}
+	<a href="https://instagram.com/{{.}}" rel="me"><i class="rotate fab fa-instagram fa-lg" aria-hidden="true"></i></a>
+	{{ end }}
+	{{ with .Site.Params.social.linkedin }}
+	<a href="https://linkedin.com/in/{{.}}" rel="me"><i class="rotate fab fa-linkedin fa-lg" aria-hidden="true"></i></a>
+	{{ end }}
+	{{ with .Site.Params.social.stackoverflow }}
+	<a href="https://stackoverflow.com/users/{{.}}" rel="me"><i class="rotate fab fa-stack-overflow fa-lg" aria-hidden="true"></i></a>
+	{{ end }}
+	{{ with .Site.Params.social.medium}}
+	<a href="https://medium.com/@{{.}}" rel="me"><i class="rotate fab fa-medium fa-lg" aria-hidden="true"></i></a>
+	{{ end }}
+	{{ with .Site.Params.social.xing }}
+	<a href="https://www.xing.com/profile/{{.}}" rel="me"><i class="rotate fab fa-xing fa-lg" aria-hidden="true"></i></a>
+	{{ end }}
+	{{ with .Site.Params.social.keybase }}
+	<a href="https://keybase.io/{{.}}" rel="me"><i class="rotate fab fa-keybase fa-lg" aria-hidden="true"></i></a>
+	{{ end }}
+	{{ with .Site.Params.social.telegram }}
+	<a href="https://t.me/{{.}}" rel="me"><i class="rotate fab fa-telegram fa-lg" aria-hidden="true"></i></a>
+	{{ end }}
+	{{ with .Site.Params.social.aboutme }}
+	&nbsp;<a href="https://about.me/{{.}}"><i class="rotate fas fa-address-card fa-lg" aria-hidden="true"></i></a>
+	{{ end }}
+	{{ with .Site.Params.social.email }}
+	<a href="mailto:{{.}}" rel="me"><i class="rotate fas fa-at fa-lg" aria-hidden="true"></i></a>
+	{{ end }}
+	{{ with .Site.Params.social.rootme }}
+    &nbsp;<a href="https://www.root-me.org/{{.}}" target="blank" class="linklogo"><div class="rotate rootme_logo logohover"></div></a>
+    {{ end }}
+    {{ with .Site.Params.social.aperikube }}
+    &nbsp;<a href="http://www.aperikube.fr" target="blank" class="linklogo"><div class="rotate aperikube_logo logohover"></div></a>
+    {{ end }}
+    {{ with .Site.Params.social.translate }}
+    &nbsp;<a href="https://thinkloveshare-com.translate.goog/?_x_tr_sl=en&_x_tr_tl=fr" target="blank" class="linklogo"><div class="rotate translate_logo logohover"></div></a>
+    {{ end }}
+</section>

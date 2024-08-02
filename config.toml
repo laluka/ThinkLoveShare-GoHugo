@@ -1,0 +1,61 @@
+## Basic Configuration
+baseurl = "https://thinkloveshare.github.io/"
+title = "Think\nLove\nShare"
+pluralizelisttitles = "false"
+googleAnalytics = "UA-128985075-1"
+enableRobotsTXT = true
+LanguageCode = "en"
+
+## Site Settings
+[params]
+    author = "Laluka"
+    description = "InfoSec, Code, Thoughts & Feels"
+    authorimage = "/img/laluka.png"
+    dateformat = "Jan 2, 2006"
+    highlightjs = true
+    highlightjsstyle = "github"
+
+## Social Accounts
+[params.social]
+    github = "Laluka"
+    gitlab = "TheLaluka"
+    linkedin = "loukajc"
+    twitter = "TheLaluka"
+    email = "loukajc@gmail.com"
+    rootme = "Laluka"
+    aperikube = "aperikube"
+    translate = "translate"
+
+
+[menu]
+    ## Main Menu
+    [[menu.main]]
+        name = "Hacking"
+        identifier = "hacking"
+        weight = 1
+        url = "/hacking/"
+    [[menu.main]]
+        name = "OffenSkill"
+        identifier = "offenskill"
+        weight = 2
+        url = "/offenskill/"
+    [[menu.main]]
+        name = "Streaming"
+        identifier = "streaming"
+        weight = 3
+        url = "/streaming/"
+    [[menu.main]]
+        name = "The rest"
+        identifier = "the_rest"
+        weight = 4
+        url = "/the_rest/"
+    [[menu.main]]
+        name = "Sponso"
+        identifier = "sponso"
+        weight = 5
+        url = "/sponso/"
+    [[menu.main]]
+        name = "About"
+        identifier = "about"
+        weight = 6
+        url = "/about/"

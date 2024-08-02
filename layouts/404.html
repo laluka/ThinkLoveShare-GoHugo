@@ -1,0 +1,12 @@
+{{ define "header" }}
+  {{ partial "header.html" . }}
+{{ end }}
+
+{{ define "content" }}
+<h1>404 - Page not found</h1>
+<p class="lead">Oopsie Woopsie I Made A Fucky Wucky -> <a href="{{ .Site.BaseURL }}">Take Me Home (Country Roads)</a></p>
+<img class="img_big" src="/img/404.png" alt="404">
+{{ end }}
+
+{{ define "footer" }}
+{{ end }}
