@@ -39,7 +39,7 @@ jobs:
       - name: Build with Hugo
         env:
           HUGO_ENVIRONMENT: production
-        run: ./hugo -d public --baseURL "${{ steps.pages.outputs.base_url }}/"
+        run: ./hugo -d public
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
