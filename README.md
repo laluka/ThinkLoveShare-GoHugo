@@ -28,6 +28,7 @@ git push
 
 - Hugo syntax : https://sourceforge.net/p/hugo-generator/wiki/markdown_syntax
 - Extended md : https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
+- Github CICD : https://github.com/laluka/ThinkLoveShare-GoHugo/actions
 
 ```html
 <!-- Custom images size -->

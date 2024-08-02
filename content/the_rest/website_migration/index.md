@@ -6,6 +6,9 @@ date: 2018-12-09
 description: "Short introduction to the technologies used to build and maintain this website and a few words on why I changed. "
 ---
 
+## 2024 Update
+
+> Henlo! We now live in github pages, yet we keep this article for legacy. The setup doesn't change much, just read the doc yo!
 
 ## Why change ?
 
