@@ -3,7 +3,7 @@ author: "Nishacit & Laluka"
 title: "Maarch Courrier 21.03, 2nd order cmd injecton to RCE"
 slug: "maarch-courrier-21.03-2nd-order-cmd-injecton-to-rce"
 date: 2023-07-16
-description: "Some more 0-day research done on Spip, includes preauth and postauth RCE. We're also welcoming our first guest-writer t0 that will introduce another post-auth RCE he found! Disclosing a bit late but hey, now it's there! :)"
+description: "This article discusses a critical remote code execution (RCE) vulnerability in the Maarch Courrier software, an electronic correspondence and document management system. The vulnerability, found during a white-box code review session, allows an attacker with administrator access to execute arbitrary commands on the server. The exploit involves command injection through improperly sanitized user inputs in the administration settings of the software. Detailed analysis, including proof of concept and the method of exploitation through the software's REST API, is provided."
 ---
 
 # Maarch Courrier 21.03 - Remote Code Execution
