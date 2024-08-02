@@ -49,7 +49,7 @@ Here I am ! Louka -> Laluka !
 -   [Zeecka](https://twitter.com/Zeecka_) \| [Aperi'Solve](https://www.aperisolve.fr/) | Awesome dev / steg guy
 -   [ENOENT](https://twitter.com/ENOENT_) \| [BitsDeep](https://bitsdeep.com/) | Reverse / Crypto / Darkness
 -   [Maki](https://twitter.com/AlanMarrec1) \|  [maki.bzh](https://maki.bzh/) | Infosec & people lover <3
--   [Laluka](https://twitter.com/TheLaluka) \|  [ThinkLoveShare](https://thinkloveshare.github.io) | Me, I guess ?
+-   [Laluka](https://twitter.com/TheLaluka) \|  [ThinkLoveShare](https://thinkloveshare.com/) | Me, I guess ?
 -   [Acknack](https://twitter.com/_ACKNAK_) | "Too easy OSCP" guy. Nailed it.
 -   [DrStache](https://twitter.com/DrStache_) | Crazy eficient XSS guy
 -   [Iptior](https://twitter.com/ErwanFily) | Cool CTF player

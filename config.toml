@@ -1,5 +1,5 @@
 ## Basic Configuration
-baseurl = "https://thinkloveshare.github.io/"
+baseurl = "/"
 title = "Think\nLove\nShare"
 pluralizelisttitles = "false"
 googleAnalytics = "UA-128985075-1"
