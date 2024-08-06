@@ -21,13 +21,25 @@
     background-image: url("/img/white_rootme.png");
 }
 
+.offenskill_logo {
+    background-image: url("/img/offenskill.png");
+}
+
+.linkoffenskill {
+    margin-left: 10px;
+    margin-right: 20px;
+}
+
 .rotate {
     color: #FFF;
     border-radius: 50%;
     -webkit-transition: -webkit-transform .1s ease-in-out;
     transition: transform .1s ease-in-out;
 }
-
+.h-wrap {
+    display: flex;
+    justify-content: center;
+}
 .rotate:hover {
     -webkit-transform: rotate(45deg);
     transform: rotate(45deg);
