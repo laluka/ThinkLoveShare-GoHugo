@@ -47,6 +47,8 @@
 
 .site__description {
     text-align: center;
+    margin-block-start: 0em;
+    margin-block-end: 0.5em;
 }
 
 .img--headshot {

@@ -306,8 +306,8 @@ a.tag {
 .sidebar-nav {
   text-align: center;
   list-style: none;
-  margin-bottom: 2rem;
-  margin-top: 2rem;
+  margin-block-start: 0.3em;
+  margin-block-end: 0.5em;
   padding-left: 0;
 }
 
@@ -337,6 +337,9 @@ a.tag {
 
 .social {
   text-align: center;
+  font-size: 0.9rem;
+  margin-block-start: 0.3em;
+  margin-block-end: 0em;
 }
 
 .social a {

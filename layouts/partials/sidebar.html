@@ -19,18 +19,14 @@
       </a>
       </p>
     {{ partial "sidebar/menu.html" . }}
-    <p>
-      {{ partial "sidebar/social.html" . }}
-    </p>
+    {{ partial "sidebar/social.html" . }}
+    {{ partial "sidebar/offenskill.html" . }}
     <p class="copyright">
       {{ with .Site.Params.copyright }}{{.|safeHTML}}{{ else }}&copy; {{ now.Format "2006"}} {{.Site.Params.author}}.
       <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Licensing</a>.
       <br/>Built with
       <a href="https://gohugo.io">Hugo</a> ❤️ <a href="https://github.com/htr3n/hyde-hyde">hyde-hyde</a>.
       {{end}}
-    </p>
-    <p>
-      {{ partial "sidebar/offenskill.html" . }}
     </p>
   </div>
 </div>
