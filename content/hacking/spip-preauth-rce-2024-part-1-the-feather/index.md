@@ -18,9 +18,9 @@ This article will cover the `issue and exploit` for an `Unauthenticated Remote C
 
 ## What's the setup again?
 
-This issue was tested on the latest back then: [4.2.9](https://files.spip.net/spip/archives/spip-v4.2.9.zip) Released the 8th of February 2024, it's SHA1 hash is [1987a75d18a57690e288be59e1c4a114cac51d84](https://spip.lerebooteux.fr/Release-Notes-25).
+This issue was tested on the latest back then: [4.2.9](https://files.spip.net/spip/archives/spip-v4.2.9.zip) Released the 8th of February 2024, its SHA1 hash is [1987a75d18a57690e288be59e1c4a114cac51d84](https://spip.lerebooteux.fr/Release-Notes-25).
 
-Oh yeah, the issue came form the [porte_plume plugin](https://plugins.spip.net/porte_plume.html), so if you update spip without updating the plugins as well, you might still be exposed! 👏
+Oh yeah, the issue came from the [porte_plume plugin](https://plugins.spip.net/porte_plume.html), so if you update spip without updating the plugins as well, you might still be exposed! 👏
 
 ```bash
 mise install php@8.1.0       # Recent install, should work on latest as well
@@ -36,7 +36,7 @@ From there, pick a `sqlite` backend to keep the setup minimalist, create an admi
 
 ## How was it caught?
 
-Two years ago, I built and deployed a simpe cron task that would pull spip core and plugins changes daily at 9pm, split the diffs in small chunks of lines, render them, and push it to one of my private discord servers. It yield a few cute results, but nothing too scary for a few months. I was already reading as much code as I could in the actuel project, but in the meantime, having these new changes was helpful to know what were the current moving parts!
+Two years ago, I built and deployed a simple cron task that would pull spip core and plugin changes daily at 9pm, split the diffs in small chunks of lines, render them, and push it to one of my private discord servers. It yielded a few cute results, but nothing too scary for a few months. I was already reading as much code as I could in the actual project, but in the meantime, having these new changes was helpful to know what were the current moving parts!
 
 And one day, [this gem](https://git.spip.net/spip/porte_plume/-/commit/3ca4cf78b96d927121c767a720203845071b7fda) came up!
 
@@ -48,7 +48,7 @@ For interested readers, a [dirty push-my-diffs PoC](https://github.com/laluka/pu
 
 Now, let's head-out to the code part!
 
-If you're a French reader, you'll quick notice THE line. 
+If you're a French reader, you'll quickly notice THE line. 
 
 > If there is php that comes from a model in here, it must be eval'd as it's not a regular page.\
 > - Someone, probably a monday morning
@@ -118,7 +118,7 @@ The previsualisation system is the same (or very similar) for post and comments.
 
 In here, we have the document uploader, possibility to insert documents by id, links, slugs, bold, italics, quoted, striked, code blocks, and more.
 
-Turns out reflecting URLs with complex formatting might be broken when the right suite of filters is applyed! By writing a dead-simple fuzzer to submit all kind of urls and formats, and logging the content passed to the previously mentioned eval statement, things got lit!
+Turns out reflecting URLs with complex formatting might be broken when the right suite of filters is applied! By writing a dead-simple fuzzer to submit all kinds of urls and formats, and logging the content passed to the previously mentioned eval statement, things got lit!
 
 I won't give every working payload here, but let's analyze one
 
@@ -143,11 +143,11 @@ So we have a link, made from a non-existing document, for which the slug contain
 curl -sSkiL 'http://0.0.0.0:8000/index.php?action=porte_plume_previsu' -X POST -d 'data=AA_[<img111111>->URL`<?php system("id");?>`]_BB'
 ```
 
-We're therefore abusing the unauth previsualization feature to reflect our terrific bb-text-like url that will keep the payload untouched due to the path formating takes!
+We're therefore abusing the unauth previsualization feature to reflect our terrific bb-text-like url that will keep the payload untouched due to the path formatting takes!
 
 ## What's the patch?
 
-This lead to two patchs, one in the core, and one in the porte_plume plugin!
+This led to two patches, one in the core, and one in the porte_plume plugin!
 
 - In the Core:
     - Urls got their own filtering function for templating
@@ -157,7 +157,7 @@ This lead to two patchs, one in the core, and one in the porte_plume plugin!
     - https://git.spip.net/spip/porte_plume/-/commit/97f9d6dddcadc9a01b098ec3552e204ce1c7a2ab
 
 > Side note here, I've had past disclosure that went... Not so well.
-> This one was smooth, Spip Dev Team member were helpful and quick to react! 🌹
+> This one was smooth, Spip Dev Team members were helpful and quick to react! 🌹
 
 ## BONUS: What's truly happening? Tracing with X-debug!
 
@@ -221,7 +221,7 @@ Well, hum... 👉👈 No. 😭
 The issue has been introduced a year ago, and `Root-Me is working on a rework`! 🥳\
 Therefore they did not spend time updating their Spip instance for over a year...
 
-So, this time, a lack of update definitely helped for security!\
+So, this time, a lack of updates definitely helped for security!\
 Feels like [php-8.1.0-dev backdoor](https://flast101.github.io/php-8.1.0-dev-backdoor-rce/), right? 🙃
 
 But next article will cover `Yet Another Unauth RCE` that this time worked on [Root-Me.org](https://www.root-me.org/), so I hope you enjoyed this one, and will kindly wait for the next one! 💌
