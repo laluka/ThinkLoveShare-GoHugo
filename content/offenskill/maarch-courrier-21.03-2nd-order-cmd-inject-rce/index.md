@@ -1,9 +1,9 @@
 ---
-author: "Nishacit & Laluka"
+author: "Nishacid & Laluka"
 title: "Maarch Courrier 21.03, 2nd order cmd injecton to RCE"
 slug: "maarch-courrier-21.03-2nd-order-cmd-injecton-to-rce"
 date: 2023-07-16
-description: "This article discusses a critical remote code execution (RCE) vulnerability in the Maarch Courrier software, an electronic correspondence and document management system. The vulnerability, found during a white-box code review session, allows an attacker with administrator access to execute arbitrary commands on the server. The exploit involves command injection through improperly sanitized user inputs in the administration settings of the software. Detailed analysis, including proof of concept and the method of exploitation through the software's REST API, is provided."
+description: "This article is the result of an OffenSkill training. It discusses a critical remote code execution (RCE) vulnerability found in the Maarch Courrier software, an electronic correspondence and document management system. The vulnerability, found during a white-box code review session, allows an attacker with administrator access to execute arbitrary commands on the server. The exploit involves command injection through improperly sanitized user inputs in the administration settings of the software. Detailed analysis, including proof of concept and the method of exploitation through the software's REST API, is provided."
 ---
 
 # Maarch Courrier 21.03 - Remote Code Execution
@@ -36,28 +36,28 @@ The vulnerability can be exploited by injecting malicious commands via the user 
 
 The vulnerability is present in the administration settings
 
-<img class="shot full" src="/offenskill/maarch-courrier-21.03-2nd-order-cmd-injecton-to-rce/admin_panel.png" alt="Screenshot of Maarch Courrier's admin panel">
+<img class="img_full" src="/offenskill/maarch-courrier-21.03-2nd-order-cmd-injecton-to-rce/admin_panel.png" alt="Screenshot of Maarch Courrier's admin panel">
 
 Then in `Autre(s)` and `Éditeurs de documents` finally in `Onlyoffice` or `CollaboraOnline`
 
-<img class="shot full" src="/offenskill/maarch-courrier-21.03-2nd-order-cmd-injecton-to-rce/admin_onlyoffice.png" alt="Screenshot of Maarch Courrier's admin OnlyOffice interface">
+<img class="img_full" src="/offenskill/maarch-courrier-21.03-2nd-order-cmd-injecton-to-rce/admin_onlyoffice.png" alt="Screenshot of Maarch Courrier's admin OnlyOffice interface">
 
 Upon modification the above fields, (i.e. change the server URI parameter), a **PUT** request is made to the **REST API** on the endpoint `/rest/configurations/admin_document_editors`, which we can display nicely as shown below with a proxy like **Burp Suite**.
 
-<img class="shot full" src="/offenskill/maarch-courrier-21.03-2nd-order-cmd-injecton-to-rce/burp_put.png" alt="Screenshot of Burp Suite interaction with Maarch Courrier using PUT method">
+<img class="img_full" src="/offenskill/maarch-courrier-21.03-2nd-order-cmd-injecton-to-rce/burp_put.png" alt="Screenshot of Burp Suite interaction with Maarch Courrier using PUT method">
 
 However, it is possible to modify the above fields, in particular the URI field, in order to inject a command.
 
-<img class="shot full" src="/offenskill/maarch-courrier-21.03-2nd-order-cmd-injecton-to-rce/burp_collaborator.png" alt="Screenshot of Burp Suite Collaborator tool with Maarch Courrier">
+<img class="img_full" src="/offenskill/maarch-courrier-21.03-2nd-order-cmd-injecton-to-rce/burp_collaborator.png" alt="Screenshot of Burp Suite Collaborator tool with Maarch Courrier">
 
 Here is the example of a cURL command that allows an attacker to exfiltrate data with an HTTP request on our (disposable) attacking domain `kymbesnitwoa7yazn0qfkkgdt4zvnobd.oastify.com`, which is under our control.\
 Next, a **GET** request is sent to the endpoint `/rest/onlyOffice/available` in order to perform the connection test on our **onlyOffice** instance, which will trigger the command execution.
 
-<img class="shot full" src="/offenskill/maarch-courrier-21.03-2nd-order-cmd-injecton-to-rce/burp_available.png" alt="Screenshot of Burp Suite showing available resources in Maarch Courrier">
+<img class="img_full" src="/offenskill/maarch-courrier-21.03-2nd-order-cmd-injecton-to-rce/burp_available.png" alt="Screenshot of Burp Suite showing available resources in Maarch Courrier">
 
 We can now check on our attacking domain whether we've received an HTTP request with the result of the shell `id` command.
 
-<img class="shot full" src="/offenskill/maarch-courrier-21.03-2nd-order-cmd-injecton-to-rce/burp_results.png" alt="Screenshot of Burp Suite displaying the results of the analysis for Maarch Courrier">
+<img class="img_full" src="/offenskill/maarch-courrier-21.03-2nd-order-cmd-injecton-to-rce/burp_results.png" alt="Screenshot of Burp Suite displaying the results of the analysis for Maarch Courrier">
 
 And indeed, we have received a request from the server where **Maarch Courrier** is installed.
 
@@ -271,7 +271,7 @@ index b2718d2c45ffb21a70640c297fa9021321da8626..51a1a6c8e6e49c54f66c2ff5219e6799
 
 The parameters values are now checked against a regular expression. One can easily visualize it with [regexper](https://regexper.com/):
 
-<img class="shot full" src="/offenskill/maarch-courrier-21.03-2nd-order-cmd-injecton-to-rce/patch_regex.png" alt="Screenshot of a patch with regex for Maarch Courrier">
+<img class="img_full" src="/offenskill/maarch-courrier-21.03-2nd-order-cmd-injecton-to-rce/patch_regex.png" alt="Screenshot of a patch with regex for Maarch Courrier">
 
 Now comes the question, is there still room for exploitation?
 
@@ -315,6 +315,6 @@ Findings:
 - 2 File write
 - 2 SSRF
 
-<img class="shot full" src="/offenskill/maarch-courrier-21.03-2nd-order-cmd-injecton-to-rce/S01-lvl-20.jpeg" alt="">
+<img class="img_full" src="/offenskill/maarch-courrier-21.03-2nd-order-cmd-injecton-to-rce/S01-lvl-20.jpeg" alt="">
 
 > Join the next Web Security Trainings at [Offenskill](https://offenskill.com/trainings/)
