@@ -182,7 +182,8 @@ Both approaches would break the attack. That's why it's required to have a doubl
 
 ## Patch & Timeline
 
-TODO
+- 2024/08/08: Wrote the report, submitted it through [Chamilo Github Issues](https://github.com/chamilo/chamilo-lms/security)
+- TODO
 
 ## Credits : Training lvl-20 | 2023 July
 
