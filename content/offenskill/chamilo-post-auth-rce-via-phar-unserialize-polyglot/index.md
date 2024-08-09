@@ -60,7 +60,7 @@ Nothing too specific here, we have one backend and a database. The research setu
 
 As usual, to discover more attack surface, and get intimate with the studied software, what I suggest is to login as an administrator, and start messing around, clicking, inspecting, nothing too structured, just play with it, let your thoughts flow, note every idea or point of interest down!
 
-We won't cover them all here, but one plugin that right away caught our attention if `vchamilo`. It it disabled by default, but can be enabled back and provides virtualization capabilities, which is... Supposed powerful?
+We won't cover them all here, but one plugin that right away caught our attention if `vchamilo`. It is disabled by default, but can be enabled back and provides virtualization capabilities, which is... Supposed powerful?
 
 <img class="img_full" src="/offenskill/chamilo-1.11.26-post-auth-rce-via-phar-unserialize-polyglot/chamilo-virtualization-plugin.png" alt="chamilo-virtualization-plugin">
 
