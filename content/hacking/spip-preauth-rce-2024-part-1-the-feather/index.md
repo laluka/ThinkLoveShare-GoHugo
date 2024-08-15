@@ -597,7 +597,7 @@ So we had to move on and find another path to code execution.
 Spip embeds templates called `squelettes` which are used to render php code.
 A markup language specific to SPIP is used to generate this code, and it is in these templates that injection resided a few months ago, resulting in command execution (cf: [icalendar generation](https://thinkloveshare.com/hacking/rce_on_spip_and_root_me_v2/)).
 
-Templates can be called up via the `data` parameter, which is contained in the various plug-in codes as well as in `/squelettes-dist/modeles`.
+Templates can be called up using the `data` parameter, which is contained in the various plug-in codes as well as in `/squelettes-dist/modeles`.
 
 An example would be to create `foreach.html` with the following content:
 
@@ -724,7 +724,7 @@ We only saw this line in the comments after completing the first method:
 // Si un lien a ete passe en parametre, ex: [<modele1>->url] ou [<modele1|title_du_lien{hreflang}->url]
 ```
 
-It is thus possible to pass a link as a parameter via `[]`!\
+It is thus possible to pass a link as a parameter using `[]`!\
 Once again, you get command execution:
 
 ```php
@@ -907,6 +907,7 @@ This was a fun vulnerability to find, and also a nice challenge, I hope I'll get
 
 ## Outro
 
-We -all- hope you've had a fun time reading this co-written article! 💌\
-See you in a few, and be aware that... New challenges are on their way! 😉\
-Again, thanks for playing, and happy summer you all! 🌈
+- We *all* hope you've had a fun time reading this co-written article 💌
+- See you in a few, and be aware that... New challenges are on their way 😉
+- 10k thank you to our numerous proof-readers [@0x1sis](https://x.com/0x1sis), [@newsoft](https://x.com/newsoft), [@Fransosiche](https://x.com/Fransosiche), [@Kelig](https://www.linkedin.com/in/kelig-avignon-785521aa/), [@Nishacid](https://x.com/Nishacid), [@NoobosaurusR3x](https://x.com/NoobosaurusR3x), [@skilo_sh](https://x.com/skilo_sh) 🫶
+- Again, thanks for playing, and happy summer you all! 🌈
