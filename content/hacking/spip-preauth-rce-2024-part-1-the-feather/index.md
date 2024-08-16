@@ -914,5 +914,5 @@ This was a fun vulnerability to find, and also a nice challenge, I hope I'll get
 
 - We *all* hope you've had a fun time reading this co-written article 💌
 - See you in a few, and be aware that... New challenges are on their way 😉
-- 10k thank you to our numerous proof-readers [@0x1sis](https://x.com/0x1sis), [@newsoft](https://x.com/newsoft), [@Fransosiche](https://x.com/Fransosiche), [@Kelig](https://www.linkedin.com/in/kelig-avignon-785521aa/), [@Nishacid](https://x.com/Nishacid), [@NoobosaurusR3x](https://x.com/NoobosaurusR3x), [@skilo_sh](https://x.com/skilo_sh) 🫶
+- 10k thank you to our numerous proof-readers [@0x1sis](https://x.com/0x1sis), [@newsoft](https://x.com/newsoft), [@Fransosiche](https://x.com/Fransosiche), [@Kelig](https://www.linkedin.com/in/kelig-avignon-785521aa/), [@Nishacid](https://x.com/Nishacid), [@NoobosaurusR3x](https://x.com/NoobosaurusR3x), [@askilow](https://x.com/skilo_sh) 🫶
 - Again, thanks for playing, and happy summer you all! 🌈
