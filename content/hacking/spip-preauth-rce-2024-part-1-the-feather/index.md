@@ -812,14 +812,14 @@ Now that we have done the setup we can start looking at the code. I simply go in
 
 However reaching the first eval is not hard, because it is triggered when trying to preview an article:
 
-<img class="img_big" src="images/trigger_porte_plume.png" alt="">
+<img class="img_big" src="trigger_porte_plume.png" alt="">
 
 At first I did not find any ref to this function, but this is because I do not know `SPIP` at all. I was looking inside `*.php` files! In fact `SPIP` seems to have is own language and uses it inside its custom page, so here is the reference to the function call:
 
-<img class="img_big" src="images/call_traitement_previsu.png" alt="">
+<img class="img_big" src="call_traitement_previsu.png" alt="">
 
 Anyway, once done we can see that the first eval cannot be used as we do not control any of its arguments... However the other looks better but seems hard to reach as it required the constant `_PROTEGE_PHP_MODELES` to be defined:
-<img class="img_big" src="images/going_into_second_eval.png" alt="">
+<img class="img_big" src="going_into_second_eval.png" alt="">
 
 #### Reaching the sink
 
@@ -827,17 +827,17 @@ Ok, so in order to reach the second `eval` located in `traitements_previsu_php_m
 located in `traitements_previsu` with the constant `_PROTEGE_PHP_MODELES` defined.
 
 However this constant is defined in `texte_mini.php`:
-<img class="img_big" src="images/define_constant.png" alt="">
+<img class="img_big" src="define_constant.png" alt="">
 
 Here, `creer_uniqid` generates a uniqid with entropy, so it is hard to predict. So the constant is defined, but we cannot predict its value (Or it seems really hard // lalu+1).
 
 Here what is important to notice is that the function is related to `modeles`. It is important, in my opinion, to read the doc of the software when looking for vulnerabilities. So I looked for modeles in the `SPIP` documentation, and I found what I needed.
 
-<img class="img_big" src="images/spip_doc_modeles.png" alt="">
+<img class="img_big" src="spip_doc_modeles.png" alt="">
 
 And here is the regex used by `SPIP` to identify them:
 
-<img class="img_big" src="images/modeles_reg.png" alt="">
+<img class="img_big" src="modeles_reg.png" alt="">
 
 There are also default modeles on SPIP, which are (according to the documentation):
 
@@ -854,24 +854,24 @@ Okay so let's try to reach the `protege_js_modeles` function by running the payl
 
 When doing this, modeles included in the text are managed by the function `Modeles::traiter`. This function tries to go through all the models and renders them as they should, by calling another function named `inclure_modele` within `assembler.php`.
 
-<img class="img_big" src="images/parcourir_modeles.png" alt="">
+<img class="img_big" src="parcourir_modeles.png" alt="">
 
 I did not look at the whole function, but from what I understood, if the model contains a link, then it will be returned in the classical `<a>` tag:
 
-<img class="img_big" src="images/render_modele.png" alt="">
+<img class="img_big" src="render_modele.png" alt="">
 
 By looking at the documentation (once again), it was possible to see how to create a link:
 
-<img class="img_big" src="images/insert_link_model.png" alt="">
+<img class="img_big" src="insert_link_model.png" alt="">
 
 So I tried this exact payload and we reached the famous code `protege_js_modeles`. The code takes our text as argument, so we can also control the parameter!\
 To setup the constant `_PROTEGE_PHP_MODELES` we just have to add a php tag inside the link, and hop we hit the breakpoint:
 
-<img class="img_big" src="images/payload_test.png)" alt="">
+<img class="img_big" src="payload_test.png)" alt="">
 
 And here is the result with the dynamic debug:
 
-<img class="img_big" src="images/bp_hit2.png" alt="">
+<img class="img_big" src="bp_hit2.png" alt="">
 
 With this we can get back to the `eval` statement, and check the arguments given by our input.\
 I ran this simple payload as a test: `[<doc|test>-><?php echo "test";?>]`
@@ -888,19 +888,19 @@ Our payload has been translated into formatted html text, so php code is highlig
 
 So the problem for me here is that `<?php` become `<span style="color: #000000"><?php</span>` than is not a valid eval anymore (`eval("<?php</span>")` -> Error). In order to get rid of this annoying tag I choose to use the size limit shown in the code:
 
-<img class="img_big" src="images/fonction_code_echappement.png" alt="">
+<img class="img_big" src="fonction_code_echappement.png" alt="">
 
 So the payload is truncated each 30000 chars, thus it is possible to leave the annoying tag behind in order to eval only php code unformatted. I ran it with a big payload, and added a quote in front of the real payload in order to protect any other text formatting, and here we are:
 
-<img class="img_big" src="images/junk_eval.png" alt="">
+<img class="img_big" src="junk_eval.png" alt="">
 
 And then the second eval is triggered with only code wanted:
 
-<img class="img_big" src="images/clean_eval.png" alt="">
+<img class="img_big" src="clean_eval.png" alt="">
 
 From there we recover the content of the payload in the response:
 
-<img class="img_big" src="images/exploit_res.png" alt="">
+<img class="img_big" src="exploit_res.png" alt="">
 
 This was a fun vulnerability to find, and also a nice challenge, I hope I'll get to fight Spip in a future assessment! :D
 
