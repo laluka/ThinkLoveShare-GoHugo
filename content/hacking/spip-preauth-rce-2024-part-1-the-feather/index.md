@@ -867,7 +867,7 @@ By looking at the documentation (once again), it was possible to see how to crea
 So I tried this exact payload and we reached the famous code `protege_js_modeles`. The code takes our text as argument, so we can also control the parameter!\
 To setup the constant `_PROTEGE_PHP_MODELES` we just have to add a php tag inside the link, and hop we hit the breakpoint:
 
-<img class="img_big" src="payload_test.png)" alt="">
+<img class="img_big" src="payload_test.png" alt="">
 
 And here is the result with the dynamic debug:
 
