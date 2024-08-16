@@ -6,7 +6,6 @@ date: 2024-08-16
 description: "We're in 2024, and we'll do some eval. Will you do some eval with me? It's been a while! Anyway, yes, we'll cover a new pre-authentication remote code execution on Spip, default installation, abusing a recent scary code change in the porte-plume plugin! :)"
 ---
 
-
 Hi dear Sir, Madam. Please be informed that this is the **third** article dedicated to [Spip](https://www.spip.net/) 0-day research, if you haven't read the first ones, I'd recommend reading them first!
 
 - [RCE on Spip and Root-Me](/hacking/rce_on_spip_and_root_me/)
@@ -790,6 +789,8 @@ http:
 
 <img class="img_big" src="nuclei.png" alt="">
 
+> Lalu: You can find also find this article at [TBD](TBD)
+
 ---
 
 ### Write-Up from **@GuilhemRioux**
@@ -904,6 +905,10 @@ From there we recover the content of the payload in the response:
 This was a fun vulnerability to find, and also a nice challenge, I hope I'll get to fight Spip in a future assessment! :D
 
 > Lalu & Vozec note: Once Guilhem agreed to share this exploit so we could analyze it, we were `0_0'` as this exploit path wasn't expected! Ironically, It's also patched by the initial patch. So we're sad that it's not a new 0day, and happy to have `@GuilhemRioux` as a co-author here! 🌹
+
+> You can find also find this article at [TBD](TBD)
+
+---
 
 ## Outro
 
