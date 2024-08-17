@@ -789,7 +789,7 @@ http:
 
 <img class="img_big" src="nuclei.png" alt="">
 
-> Lalu: You can find also find this article at [TBD](TBD)
+> Lalu: More cool stuff from @Vozec at [https://vozec.fr/](https://vozec.fr/)
 
 ---
 
