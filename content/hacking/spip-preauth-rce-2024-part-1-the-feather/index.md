@@ -906,8 +906,6 @@ This was a fun vulnerability to find, and also a nice challenge, I hope I'll get
 
 > Lalu & Vozec note: Once Guilhem agreed to share this exploit so we could analyze it, we were `0_0'` as this exploit path wasn't expected! Ironically, It's also patched by the initial patch. So we're sad that it's not a new 0day, and happy to have `@GuilhemRioux` as a co-author here! 🌹
 
-> You can find also find this article at [TBD](TBD)
-
 ---
 
 ## Outro
