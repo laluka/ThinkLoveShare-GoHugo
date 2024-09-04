@@ -149,7 +149,7 @@ The plugin is quite substantial:
 
 Instead of spending time reading all the code, I started by researching dangerous behavior via [RegEx](https://fr.wikipedia.org/wiki/Expression_r%C3%A9guli%C3%A8re).
 
-After several searches for dangerous functions: `eval`, `file_get_contents`, `system`... as well as `arbitrary object instantiation` such as `$a($b) )` I finally found a dubiously coded function! ☺️
+After several searches for dangerous functions: `eval`, `file_get_contents`, `system`... as well as `arbitrary object instantiation` such as `$a($b) )` I finally found a suspicious function! ☺️
 
 ## The vulnerable function
 
@@ -433,7 +433,11 @@ name="RCE'-sprintf(system('id'),die())-'[ABCD]"
 
 <img class="img_full" src="isok.png" alt="isok">
 
-Hello, Laluka here, I'll take the next part that makes this lovely post-auth RCE pre-auth! 😉
+---
+
+Hello, Laluka here! 👋
+
+I'll take the next part that makes this lovely post-auth RCE pre-auth! 😉
 
 ## Making the RCE Pre-Auth
 
