@@ -301,8 +301,8 @@ To this day, we are still waiting for an answer and a CVE number.
 Attendees:
 
 - Alexandre Caravaca / [@Nishacid](https://twitter.com/Nishacid)
-- Elven Colleu / [@d34dl0ck_](https://twitter.com/d34dl0ck_)
-- Amina Bali / [@Vhelen_](https://twitter.com/Vhelen_)
+- Amina Bali / [@d34dl0ck_](https://twitter.com/d34dl0ck_)
+- Elven Colleu / [@Vhelen_](https://twitter.com/Vhelen_)
 - Rémi Le Mer / urukaiii
 
 Findings:
