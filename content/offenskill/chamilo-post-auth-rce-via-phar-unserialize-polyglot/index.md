@@ -2,7 +2,7 @@
 author: "Laluka"
 title: "Chamilo 1.11.26 Post Auth RCE via Phar Unserialize Polyglot"
 slug: "chamilo-1.11.26-post-auth-rce-via-phar-unserialize-polyglot"
-date: 2024-08-06
+date: 2024-11-18
 description: "This article is the result of an OffenSkill Training. It explores a post-authentication phar unserialize leading to a remote code execution (RCE) within Chamilo (Learning Management System) 1.11.12 up to 1.11.26. By abusing multiple supported features from the virtualization plugin vchamilo, the vulnerability allows an administrator to execute arbitrary code on the server."
 ---
 
