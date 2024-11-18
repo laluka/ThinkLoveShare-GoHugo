@@ -182,10 +182,36 @@ So in a way, it's wrong, but it's right, but so wrong. `¯\_(ツ)_/¯`
 
 Both approaches would break the attack. That's why it's required to have a double injection point before triggering the exploit, but in the meantime, it makes automated detection less likely. It's 2024 and brains are still required, what a life.. 🙃
 
+## BONUS 3: Funky patch
+
+The draft patch contained two patterns that are often seen as a decent first approach, but are actually not:
+
+<img class="img_full" src="/offenskill/chamilo-1.11.26-post-auth-rce-via-phar-unserialize-polyglot/draft-patch.png" alt="draft-patch">
+
+> The idea here is *not* to throw stones, the staff reaction to my bypasses was really enthusiastic, they were happy to learn common weak patterns, and came up with the final fix: "Let's blank that unused file !" 🌹\
+> But I still wanted to share these examples are they are used way too often.. 😅
+
+## BONUS 4: Is this all useless due to CNEXT & CVE-2024-2961?
+
+Late in 2024, [@cfreal_](https://x.com/cfreal_) disclosed the `CVE-2024-2961` and its [PoC](https://github.com/ambionics/cnext-exploits).\
+This is a direct remote code execution at glibc level reached through the php iconv filter.
+
+This implies that even if the exploit introduced here can be used on updated linux hosts, the same sinks can also be abused to obtain a one shot file-less RCE through CNEXT. This would not require phar/png upload, phar gadgets, nor a php version below 8.1 (automatic phar metada unserialize disabled) to be exploitable.\
+This really is a game changer, being on this issue or every phar based exploit in the past 20 years...
+
+Again, a *HUGE* Gg to [@cfreal_](https://x.com/cfreal_) for pushing it *that* far once more! 🫡
+
 ## Patch & Timeline
 
-- 2024/08/08: Wrote the report, submitted it through [Chamilo Github Issues](https://github.com/chamilo/chamilo-lms/security)
-- TODO
+- 2024/08/08: [Wrote the report](https://github.com/chamilo/chamilo-lms/security/advisories/GHSA-c4fc-vjm9-9mvc), submitted it through [Chamilo Github Issues](https://github.com/chamilo/chamilo-lms/security)
+- 2024/09/26: First answer after a few pings: "Sorry, we didn't catch this. [...]", so delayed but OK
+- 2024/09/30: Temporary fork started with a draft patch from "BONUS 3" above
+- 2024/10/07: Draft Patch review, two bypasses found
+- 2024/10/10: Staff answers stating that this file is deprecated since 2016 for security reasons and has been reintroduced by mistake
+- 2024/10/11: Final patch is "we blank this file" and `CVE-2024-47886` is issued! 🥰
+- 2024/10/21: Chamilo 1.11.28 is released
+- 2024/11/15: Article is teased as a "fun timeline and patch" rump during [GreHack](https://grehack.fr/)
+- 2024/11/18: Full article is updated & published 🥳
 
 ## Credits : Training lvl-20 | 2023 July
 
