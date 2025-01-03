@@ -56,9 +56,9 @@ services:
 
 Nothing too specific here, we have one backend and a database. The research setup included a [Snuffleupagus](https://snuffleupagus.readthedocs.io/) setup to log interesting functions being reached, and a [Sysdig](https://github.com/draios/sysdig) container for `system-level introspection`, `IOs`, `networking`, `executed commands`, and more.
 
-<img class="img_small" src="/offenskill/chamilo-1.11.26-post-auth-rce-via-phar-unserialize-polyglot/chamilo-login-page.png" alt="chamilo-login-page">
+<img class="img_small" src="chamilo-login-page.png" alt="chamilo-login-page">
 
-<img class="img_full" src="/offenskill/chamilo-1.11.26-post-auth-rce-via-phar-unserialize-polyglot/chamilo-admin-dashboard.png" alt="chamilo-admin-dashboard">
+<img class="img_full" src="chamilo-admin-dashboard.png" alt="chamilo-admin-dashboard">
 
 ## Early thoughts
 
@@ -66,7 +66,7 @@ As usual, to discover more attack surface, and get intimate with the studied sof
 
 We won't cover them all here, but one plugin that right away caught our attention if `vchamilo`. It is disabled by default, but can be enabled back and provides virtualization capabilities, which is... Supposed powerful?
 
-<img class="img_full" src="/offenskill/chamilo-1.11.26-post-auth-rce-via-phar-unserialize-polyglot/chamilo-virtualization-plugin.png" alt="chamilo-virtualization-plugin">
+<img class="img_full" src="chamilo-virtualization-plugin.png" alt="chamilo-virtualization-plugin">
 
 ## Code Reading & Analysis
 
@@ -74,23 +74,23 @@ We won't cover them all here, but one plugin that right away caught our attentio
 
 ### Enable Virtualization Plugin
 
-<img class="img_med" src="/offenskill/chamilo-1.11.26-post-auth-rce-via-phar-unserialize-polyglot/vchamilo-settings.png" alt="vchamilo-settings">
+<img class="img_med" src="vchamilo-settings.png" alt="vchamilo-settings">
 
 ### Generate Phar payload with Phpggc
 
-<img class="img_med" src="/offenskill/chamilo-1.11.26-post-auth-rce-via-phar-unserialize-polyglot/phpggc-phar-creation.png" alt="phpggc-phar-creation">
+<img class="img_med" src="phpggc-phar-creation.png" alt="phpggc-phar-creation">
 
 ### Upload Phar as "foo.png" with ElFinder
 
-<img class="img_full" src="/offenskill/chamilo-1.11.26-post-auth-rce-via-phar-unserialize-polyglot/file-upload-path-disclo.png" alt="file-upload-path-disclo">
+<img class="img_full" src="file-upload-path-disclo.png" alt="file-upload-path-disclo">
 
 ### Set "Container effectif" to "phar://"
 
-<img class="img_full" src="/offenskill/chamilo-1.11.26-post-auth-rce-via-phar-unserialize-polyglot/planting-phar-path.png" alt="planting-phar-path">
+<img class="img_full" src="planting-phar-path.png" alt="planting-phar-path">
 
 ### Trigger Phar Unserialize
 
-<img class="img_full" src="/offenskill/chamilo-1.11.26-post-auth-rce-via-phar-unserialize-polyglot/trigger-rce-unserialize.png" alt="trigger-rce-unserialize">
+<img class="img_full" src="trigger-rce-unserialize.png" alt="trigger-rce-unserialize">
 
 ### Putting it all together
 
@@ -170,7 +170,7 @@ From this, we'll deduce that:
 > Phar are archives, they can contain files or directories, but are a single file...\
 So in a way, it's wrong, but it's right, but so wrong. `¯\_(ツ)_/¯`
 
-<img class="img_full" src="/offenskill/chamilo-1.11.26-post-auth-rce-via-phar-unserialize-polyglot/phar-shenanigans-is_dir.png" alt="phar-shenanigans-is_dir">
+<img class="img_full" src="phar-shenanigans-is_dir.png" alt="phar-shenanigans-is_dir">
 
 ## BONUS 2: Why a two part exploit?
 
@@ -178,7 +178,7 @@ So in a way, it's wrong, but it's right, but so wrong. `¯\_(ツ)_/¯`
     - Because a null value results in a default one being used
     - `$coursedir = api_get_path(SYS_PATH).$dataroot;`.
 
-<img class="img_med" src="/offenskill/chamilo-1.11.26-post-auth-rce-via-phar-unserialize-polyglot/why-not-empty-prefix.png" alt="why-not-empty-prefix">
+<img class="img_med" src="why-not-empty-prefix.png" alt="why-not-empty-prefix">
 
 - Why not keep the second field blank?
     - This would result in a trailing / that would also prevent one-shot exploitation
@@ -190,7 +190,7 @@ Both approaches would break the attack. That's why it's required to have a doubl
 
 The draft patch contained two patterns that are often seen as a decent first approach, but are actually not:
 
-<img class="img_full" src="/offenskill/chamilo-1.11.26-post-auth-rce-via-phar-unserialize-polyglot/draft-patch.png" alt="draft-patch">
+<img class="img_full" src="draft-patch.png" alt="draft-patch">
 
 > The idea here is *not* to throw stones, the staff reaction to my bypasses was really enthusiastic, they were happy to learn common weak patterns, and came up with the final fix: "Let's blank that unused file !" 🌹\
 > But I still wanted to share these examples are they are used way too often.. 😅
@@ -234,6 +234,6 @@ Findings:
 - Phar unserialize trigger & gadget
 - 1 File read
 
-<img class="img_full" src="/offenskill/chamilo-1.11.26-post-auth-rce-via-phar-unserialize-polyglot/S02-lvl-20.jpeg" alt="S02-lvl-20">
+<img class="img_full" src="S02-lvl-20.jpeg" alt="S02-lvl-20">
 
 > Join the next Web Security Trainings at [Offenskill](https://offenskill.com/trainings/)
