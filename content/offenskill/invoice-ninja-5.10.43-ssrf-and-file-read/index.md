@@ -27,7 +27,7 @@ Resources:
 
 ## Vulnerability detail
 
-The lab used during this training is no other than the [official invoiceninja docker images](https://github.com/invoiceninja/dockerfiles). The issue is reachable with an account (any priv level), and is nothing but an badly sanitized HTML injection in the context of a browser-based html invoice being rendered to pdf.
+The lab used during this training is no other than the [official invoiceninja docker images](https://github.com/invoiceninja/dockerfiles). The issue is reachable with an account (any priv level), and is nothing but a badly sanitized HTML injection in the context of a browser-based html invoice being rendered to pdf.
 
 At the time of writing (Jan 2025), the code responsible for the issue is [still present](https://github.com/invoiceninja/invoiceninja/blob/b53818aa16bfbbd7ed87a4ce434cbda7d2189275/app/Utils/Traits/Pdf/PdfMaker.php#L42) in the latest version `v5.11.7`.
 
@@ -88,11 +88,11 @@ trait PdfMaker
 }
 ```
 
-It is to note that on an outdated deployment of the [Snappdf](https://github.com/beganovich/snappdf) library used, this issue could lead to a straight-up Remote Code Execution with a browser exploit n-day as the library [disables the sandbox by default](https://github.com/beganovich/snappdf/blob/340e877e63ef98db82766a8d8a853d7759cf79fa/src/Snappdf.php#L42) with `--no-sandbox`.
+On an outdated deployment of the [Snappdf](https://github.com/beganovich/snappdf) library used, this issue could lead to a straight-up Remote Code Execution with a browser exploit n-day as the library [disables the sandbox by default](https://github.com/beganovich/snappdf/blob/340e877e63ef98db82766a8d8a853d7759cf79fa/src/Snappdf.php#L42) with `--no-sandbox`.
 
-This bug could therefore be chained with a browser exploit, an SSRF to the internal network including the loopback, or even an arbitrary file read to push the exploit chain further.
+This bug could therefore be chained with a browser exploit, a SSRF to the internal network including the loopback, or even an arbitrary file read to push the exploit chain further.
 
-As far as we know, there are limitations on a browser based file read, in our specific case, accessing files from the `/proc/` filesystem, or with a `.php` suffix was blocked and we couldn't come up with a bypass before the end of the training. The rendering is done as `www-data`, so usual UNIX user rights apply as well (i.e. can't read `/etc/shadow` or other `root-owned` files).
+As far as we know, there are limitations on a browser based file read. In our specific case, accessing files from the `/proc/` filesystem, or with a `.php` suffix was blocked and we couldn't come up with a bypass before the end of the training. The rendering is done as `www-data`, so usual UNIX user rights apply as well (i.e. can't read `/etc/shadow` or other `root-owned` files).
 
 ## Root Cause Analysis
 
@@ -131,7 +131,7 @@ By looking into it, we can say that it's time to create slightly different paylo
 
 This simple html injection is nice and already allows XSS. Now with the IP bypass we obtain the SSRF aspect of it, but there might be a simpler and more generic bypass to this filter, right? Riiight?
 
-Also, the SSRF & XSS is subject to the browser CORS securities, which might be annoying... But we're (the html content) hosted on a `file://` and not `https?://` scheme, meaning file access should be granted!
+Also, the SSRF & XSS is subject to the browser CORS securities, which might be annoying... But the html content is hosted on a `file://` and not `https?://` scheme, meaning file access should be granted!
 
 Bypass part, shall we?
 
@@ -147,7 +147,7 @@ You get it, mutations goes like:
 
 From this point I -brank0- jumped straight to the other part of Invoice Ninja to read internal files!
 
-If we navigate to `Settings` , then `Invoice design` , then `Custom designs` and click on `Design` (😴). Finally we pick `Body` and replace the body html code with our Proof of Concept code (style has been added to force display and readability):
+First, we navigate to `Settings`, then `Invoice design`, then `Custom designs` and click on `Design` (😴). Then we pick `Body` and replace the body html code with our Proof of Concept code (style has been added to force display and readability):
 
 ```html
 AA<ifriframeame 
