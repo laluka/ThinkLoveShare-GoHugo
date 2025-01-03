@@ -210,7 +210,7 @@ By tweaking the code, we tested many payloads and can affirm that `Laravel/RCE17
 
 ## Timeline
 
-- 03/01/2025 - Sending the draft blogpost to `invoice-ninja-security@invoice-ninja.com`
+- 03/01/2025 - Sending the draft blogpost to `contact@invoiceninja.com`
 - ??/??/???? - foo
 
 ## Credits : Training lvl-30 | 2024 October
