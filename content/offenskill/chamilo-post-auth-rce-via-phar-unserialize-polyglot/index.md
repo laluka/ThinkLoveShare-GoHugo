@@ -6,6 +6,10 @@ date: 2024-11-18
 description: "This article is the result of an OffenSkill Training. It explores a post-authentication phar unserialize leading to a remote code execution (RCE) within Chamilo (Learning Management System) 1.11.12 up to 1.11.26. By abusing multiple supported features from the virtualization plugin vchamilo, the vulnerability allows an administrator to execute arbitrary code on the server."
 ---
 
+> Quick update: I gave a cute rump about this training, report, and patch at [GreHack 2024](https://grehack.fr/), feel free to check it out! ;)
+
+{{< youtube D5nP_gg0QZ8 >}}
+
 # Chamilo 1.11.26 - Post-Auth RCE
 
 This article is the result of an [OffenSkill Training](https://www.offenskill.com/trainings). It explores a `post-authentication phar unserialize` leading to a `remote code execution (RCE) within Chamilo` (Learning Management System) `1.11.12` up to `1.11.26`. By abusing multiple supported features from the `virtualization plugin vchamilo`, the vulnerability allows an administrator to execute arbitrary code on the server.
