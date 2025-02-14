@@ -2,13 +2,15 @@
 author: "Branko & Laluka"
 title: "Invoice Ninja 5.10.43 - Server Side Request Forgery and File Read"
 slug: "invoice-ninja-5.10.43-ssrf-and-file-read"
-date: 2025-01-03
+date: 2025-02-14
 description: "This writeup is the consequence of Laluka's mastery and Branko's wish to learn semething new. It will go through the description and reproduction of new vulnerabilities found in the invoicing application Invoice Ninja. This research was done during a two days OffenSkill lvl-30 training, with a white-box approach."
 ---
 
+> Hey, Happy Valentine's day! 😽
+
 ## Introduction
 
-This session was focused on a white-box code review, tooling, and instrumentation.
+This article is the result of an OffenSkill lvl-30 training focused on a white-box code review, tooling, and applicative introspection.
 
 The picked lab was `Invoice Ninja`, version `5.10.43`. It is a Laravel based software and its vendor page can be found [here](https://invoiceninja.com/). The source code is available on their [Github](https://github.com/invoiceninja/invoiceninja/tree/v5.10.43).
 
@@ -16,13 +18,14 @@ This software/product is introduced as follows:
 
 > A source-available invoice, quote, project and time-tracking app built with Laravel.
 
-In this writeup we'll cover two ways to exploit our newly controlled pdf renderer. First the Server Side Request Forgery aspect, and then the Arbitrary File Read.
+In this writeup we'll cover two ways to exploit our newly controlled pdf renderer.\
+First on the Server Side Request Forgery side of things, then on the Arbitrary File Read one.
 
-> It is left as an exercise for the reader to turn the file read primitive into a more than probable Arbitrary Remote Code Execution through Laravel encryption/decryption, and signed serialize/unserialize behaviors. More on that later in this article, remember to read [Remsio](https://x.com/_remsio_)'s cool work and send him cookies! 🌹
+> It is left as an exercise for the reader to turn the file read primitive into a Remote Code Execution through Laravel encryption/decryption, and signed serialize/unserialize behaviors. It is a fact that once the laravel encryption key is known, an unserialize sink to RCE exists on this version. More on that later in this article, remember to read [Remsio](https://x.com/_remsio_)'s cool work and send him cookies! 🌹
 
 Resources:
 
-- [Article & PDF Slides](https://www.synacktiv.com/sites/default/files/2024-12/deep_dive_in_Laravel_encryption.pdf)
+- [PDF Synachtiv Deep Dive in Laravel Encryption](https://www.synacktiv.com/sites/default/files/2024-12/deep_dive_in_laravel_encryption.pdf)
 - [Tool Laravel-crypto-killer](https://github.com/synacktiv/Laravel-crypto-killer)
 
 ## Vulnerability detail
@@ -139,13 +142,13 @@ The code `str_ireplace(['foo', 'bar'], '', $html);` will replace within the `$ht
 
 Bypass done! 😎
 
-You get it, mutations goes like:
+You get it, mutations are like:
 
-- `<ifraiframeme>` > `<iframe>`
-- `filfile:/e:///etc/passwd` > `file:///etc/passwd`
+- `<ifraiframeme>` goes `<iframe>`
+- `filfile:/e:///etc/passwd` goes `file:///etc/passwd`
 - And so on!
 
-From this point I -brank0- jumped straight to the other part of Invoice Ninja to read internal files!
+From this point I -[@brank0x42](https://twitter.com/brank0x42)- jumped straight to the other part of Invoice Ninja to read internal files!
 
 First, we navigate to `Settings`, then `Invoice design`, then `Custom designs` and click on `Design` (😴). Then we pick `Body` and replace the body html code with our Proof of Concept code (style has been added to force display and readability):
 
@@ -193,7 +196,7 @@ A true eye candy for every Security Ninja! 🥷
   - Rework the whole pdf rendering or style edition.. 😭
   - No `--no-sandbox`.
   - Ideally, generate everything on the frontend (less parsers differentials, front does front stuff)
-- Funky & Idealist ones / `./lalu_complain_time.sh`
+- Funky & Idealist ones - `./lalu_complain_time.sh`
   - No php.
   - No controlled html at all (client side path traversal, browser abuse, ...)
   - This lib seems shady af omg... Str concat to exec commands, file:// prefix, only few commits...
@@ -206,12 +209,16 @@ Before looking for a sink, we just ensured that a known or trivial unserialize g
 
 By tweaking the code, we tested many payloads and can affirm that `Laravel/RCE17` from [PHPGGC](https://github.com/ambionics/phpggc) worked right away. So as suggested early in this article, take some time, find an unserialize sink, read the Laravel secret, encrypt the payload, and `SPAWN A SHELL`! 😘
 
-> Feel free to DM me -lalu- if you did so, I'll happily feature your research & writings here! 🍀
+> Feel free to DM me -lalu- if you did so and have a clean script or nuclei template, I'll happily feature your research here! 🍀
 
 ## Timeline
 
 - 03/01/2025 - Sending the draft blogpost to `contact@invoiceninja.com`
-- ??/??/???? - foo
+- 04/01/2025 - The vendor submits a weak patch and claims it's neat
+- 05/01/2025 - The vendor tries to hide our bug as [CVE-2024-53353](https://www.cve.org/CVERecord?id=CVE-2024-53353) which was on a prior version...
+- 09/01/2025 - After many emails, we give up with the vendor, their weak patches, and call it a day. Again... 😭
+- 14/01/2025 - [CVE-2025-0474](https://vulncheck.com/advisories/invoice-ninja-ssrf) gets reserved! 🥳
+- 14/01/2025 - BlogPost published
 
 ## Credits : Training lvl-30 | 2024 October
 
