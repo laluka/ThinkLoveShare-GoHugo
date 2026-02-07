@@ -357,8 +357,6 @@ All the vulnerabilities found during the training could be chained together to a
 
 <img class="img_full" src="full_chain.png" alt="Full chain explained">
 
-TODO(schema moins large, genre mettre "attacker" sous "unauthenticated access" pour l'avoir plus replié sur lui meme ? :/ )
-
 **Sum'd Up Full Chain**:
 
 1. Get unauthorized access thanks to the Broken Access Control
@@ -406,10 +404,6 @@ The full chain can be achieved in 2 technical steps:
 curl -u abc: "http://<ENKETO_SERVER_URL>/api/v2/survey/view/pdf?server_url=https://testserver.com/bob&form_id=widgets&instance=foo&instance_id=111" -H 'Host: <ATTACKER_DOMAIN>'
 ```
 
-## Mitigations
-
-TODO(Wait for patches)
-
 ## Timeline
 
 - 2024/11/24: OffenSkill Training, we break stuff 😏
@@ -436,7 +430,7 @@ Attendees:
 - Alexis Marquois / [Skilo](https://x.com/askilow)
 - Nicolas Florent / [@Nitiflor](https://twitter.com/Nitiflor)
 - Fadi Obeid
-- [jrjgjk](https://x.com/GuilhemRioux) (Joined us for some friendly R&D) TODO(check guilhem/jrjgjk)
+- [jrjgjk](https://x.com/GuilhemRioux) (Joined us for friendly R&D)
 
 <img class="img_full" src="photo_finish.png" alt="">
 
