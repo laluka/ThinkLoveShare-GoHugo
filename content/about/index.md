@@ -12,7 +12,7 @@ Here you'll find all kind of information, mainly IT security and development rel
 ## Whoami
 
 - PDF Resume here: [english.pdf](/about/CV_Louka_JC_EN.pdf) || [french.pdf](/about/CV_Louka_JC_FR.pdf)
-- Everything else: [https://linktr.ee/TheLaluka](linktr.ee/TheLaluka)
+- Everything else: [linktr.ee/TheLaluka](https://linktr.ee/TheLaluka)
 
 Hello there ! My name is Louka Jacques-Chevallier, also known as Laluka. I love learning,
 teaching and sharing tips. I lived here for quite a while, and this is the place I like the most on earth, so while you're here, enjoy the view ! =]
